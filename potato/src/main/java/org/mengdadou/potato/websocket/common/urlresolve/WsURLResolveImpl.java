@@ -24,8 +24,8 @@ public class WsURLResolveImpl implements WsURLResolve {
     }
     
     private Function<String, String> tunnelKeyFunc = wsURL -> {
+        if (wsURL.startsWith("wss://")) wsURL = wsURL.replace("wss://", "");
         if (wsURL.startsWith("ws://")) wsURL = wsURL.replace("ws://", "");
-        if (wsURL.startsWith("wss://")) wsURL = wsURL.replace("ws://", "");
         return wsURL.substring(0, wsURL.indexOf("/")).split(":")[0] + PrpcConfig.BRPC_SEPARATOR
                 + wsURL.substring(getStringIndex(wsURL, "/", 3) + 1, getStringIndex(wsURL, "/", 4));
     };
