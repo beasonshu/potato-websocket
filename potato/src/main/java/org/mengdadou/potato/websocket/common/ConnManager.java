@@ -1,23 +1,22 @@
 package org.mengdadou.potato.websocket.common;
 
-import javax.websocket.Session;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by mengdadou on 17-9-25.
  */
 public class ConnManager {
-    private        ConcurrentHashMap<String, Session> connMapping = new ConcurrentHashMap<>();
+    private        ConcurrentHashMap<String, SessionWrapper> connMapping = new ConcurrentHashMap<>();
     private static ConnManager                        connManager = new ConnManager();
     
     private ConnManager() {
     }
     
-    public void put(String key, Session session) {
+    public void put(String key, SessionWrapper session) {
         connMapping.put(key, session);
     }
     
-    public Session remove(String key) {
+    public SessionWrapper remove(String key) {
         return connMapping.remove(key);
     }
     
@@ -25,7 +24,7 @@ public class ConnManager {
         return connMapping.containsKey(key);
     }
     
-    public Session get(String key) {
+    public SessionWrapper get(String key) {
         return connMapping.get(key);
     }
     

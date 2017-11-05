@@ -41,23 +41,23 @@ public class PrpcHelper {
             ExecutionException, InterruptedException {
         Request request = new Request(RequestType.SYNC.getType(), wsURL, data);
         PrpcFuture future = new PrpcFuture(request.getId());
-        connect(wsURL).getAsyncRemote().sendObject(MessageFactory.newMsg(request)).get();
+        connect(wsURL).asyncSendObject(MessageFactory.newMsg(request));
         return future;
     }
 
     public static void notify(String wsURL, Object... data) throws RemoteException,
             InterruptedException, ExecutionException {
         Request request = new Request(RequestType.NOTIFY.getType(), wsURL, data);
-        connect(wsURL).getAsyncRemote().sendObject(MessageFactory.newMsg(request)).get();
+        connect(wsURL).asyncSendObject(MessageFactory.newMsg(request));
     }
 
-    private static Session connect(String wsURL) {
+    private static SessionWrapper connect(String wsURL) {
         if (connManager.contains(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL)))
             return connManager.get(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL));
         return syncConnect(wsURL);
     }
 
-    private synchronized static Session syncConnect(String wsURL) {
+    private synchronized static SessionWrapper syncConnect(String wsURL) {
         if (connManager.contains(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL)))
             return connManager.get(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL));
         return connR(wsURL);
@@ -67,12 +67,13 @@ public class PrpcHelper {
     // means that will create N conn to one remote
     // remote can be any content
     // but you should impl the URLHandler for get the host
-    private static Session connR(String wsURL) {
+    private static SessionWrapper connR(String wsURL) {
         try {
             Session session = container.connectToServer(endpoint, URI.create(wsURL));
-            connManager.put(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL), session);
+            SessionWrapper wrapper = SessionWrapper.of(session);
+            connManager.put(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL), wrapper);
             session.getUserProperties().put("wsURL", wsURL);
-            return session;
+            return wrapper;
         } catch (DeploymentException | IOException e) {
             e.printStackTrace();
         }
