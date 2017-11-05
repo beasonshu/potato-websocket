@@ -13,16 +13,8 @@ public class ConnManager {
     private ConnManager() {
     }
     
-    public void putIfAbsent(String key, Session session) {
-        connMapping.putIfAbsent(key, session);
-    }
     public void put(String key, Session session) {
         connMapping.put(key, session);
-    }
-    
-    
-    public Session getOrDefault(String key, Session session) {
-        return connMapping.getOrDefault(key, session);
     }
     
     public Session remove(String key) {
