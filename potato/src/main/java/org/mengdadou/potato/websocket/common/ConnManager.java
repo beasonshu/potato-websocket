@@ -1,6 +1,7 @@
 package org.mengdadou.potato.websocket.common;
 
-import javax.websocket.Session;
+import javax.websocket.CloseReason;
+import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -20,8 +21,8 @@ public class ConnManager {
         })));
     }
     
-    public void put(String key, Session session) {
-        connMapping.put(key, session);
+    public void put(String key, SessionWrapper sessionWrapper) {
+        connMapping.put(key, sessionWrapper);
     }
     
     public SessionWrapper remove(String key) {
