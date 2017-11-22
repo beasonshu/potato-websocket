@@ -1,6 +1,8 @@
 package org.mengdadou.potato.websocket.common;
 
+import javax.websocket.CloseReason;
 import javax.websocket.Session;
+import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -11,6 +13,13 @@ public class ConnManager {
     private static ConnManager                        connManager = new ConnManager();
     
     private ConnManager() {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> connMapping.values().forEach(a -> {
+            try {
+                a.close(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, "JVM down"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        })));
     }
     
     public void putIfAbsent(String key, Session session) {
