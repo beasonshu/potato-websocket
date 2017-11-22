@@ -21,62 +21,65 @@ import java.util.concurrent.TimeoutException;
  * Created by mengdadou on 17-9-25.
  */
 public class PrpcHelper {
-    protected static ConnManager connManager = ConnManager.getInstance();
+    private static ConnManager connManager = ConnManager.getInstance();
 
     private static final WebSocketContainer container = ContainerProvider.getWebSocketContainer();
 
-    public static Class endpoint = PrpcClientEndpoint.class;
+    private static Class endpoint = PrpcClientEndpoint.class;
 
     public static void reset(String brpcKey, String reason) throws IOException {
         connManager.remove(brpcKey).close(
                 new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, reason));
     }
-    
+
     public static Object sync(String wsURL, Object... data) throws RemoteException,
             InterruptedException, ExecutionException, TimeoutException {
         return async(wsURL, data).get(PrpcConfig.READ_TIME_OUT, TimeUnit.MILLISECONDS);
     }
-    
+
     public static PrpcFuture async(String wsURL, Object... data) throws RemoteException,
             ExecutionException, InterruptedException {
         Request request = new Request(RequestType.SYNC.getType(), wsURL, data);
         PrpcFuture future = new PrpcFuture(request.getId());
-        connect(wsURL).getAsyncRemote().sendObject(MessageFactory.newMsg(request)).get();
+        connect(wsURL).asyncSendObject(MessageFactory.newMsg(request));
         return future;
     }
-    
+
     public static void notify(String wsURL, Object... data) throws RemoteException,
             InterruptedException, ExecutionException {
         Request request = new Request(RequestType.NOTIFY.getType(), wsURL, data);
-        connect(wsURL).getAsyncRemote().sendObject(MessageFactory.newMsg(request)).get();
+        connect(wsURL).asyncSendObject(MessageFactory.newMsg(request));
     }
-    
-    private static Session connect(String wsURL) {
-        return connManager.getOrDefault(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL), syncConnect(wsURL));
+
+    private static SessionWrapper connect(String wsURL) {
+        if (connManager.contains(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL)))
+            return connManager.get(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL));
+        return syncConnect(wsURL);
     }
-    
-    private synchronized static Session syncConnect(String wsURL) {
+
+    private synchronized static SessionWrapper syncConnect(String wsURL) {
         if (connManager.contains(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL)))
             return connManager.get(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL));
         return connR(wsURL);
     }
-    
+
     // not thread safe
     // means that will create N conn to one remote
     // remote can be any content
     // but you should impl the URLHandler for get the host
-    private static Session connR(String wsURL) {
+    private static SessionWrapper connR(String wsURL) {
         try {
             Session session = container.connectToServer(endpoint, URI.create(wsURL));
-            connManager.put(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL), session);
+            SessionWrapper wrapper = SessionWrapper.of(session);
+            connManager.put(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL), wrapper);
             session.getUserProperties().put("wsURL", wsURL);
-            return session;
+            return wrapper;
         } catch (DeploymentException | IOException e) {
             e.printStackTrace();
         }
         return null;
     }
-    
+
     public static void writeResp(Response response) {
         PrpcFuture f = FutureMapping.singleton().get(response.getId());
         if (f == null) return;

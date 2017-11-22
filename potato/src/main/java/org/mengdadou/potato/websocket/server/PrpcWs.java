@@ -2,6 +2,7 @@ package org.mengdadou.potato.websocket.server;
 
 import org.mengdadou.potato.websocket.common.ConnManager;
 import org.mengdadou.potato.websocket.common.PrpcConfig;
+import org.mengdadou.potato.websocket.common.SessionWrapper;
 import org.mengdadou.potato.websocket.common.message.PrpcMessage;
 import org.mengdadou.potato.websocket.common.urlresolve.WsURLResolveEnum;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public class PrpcWs {
     public void onOpen(Session session) {
         String tunnelKey = handleSession.apply(session);
         log.debug("open session {}/{}", session.getId(), tunnelKey);
-        connManager.put(tunnelKey, session);
+        connManager.put(tunnelKey, SessionWrapper.of(session));
     }
     
     public void onMessage(PrpcMessage message, Session session) {
