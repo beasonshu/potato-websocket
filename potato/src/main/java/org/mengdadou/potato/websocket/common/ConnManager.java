@@ -22,9 +22,6 @@ public class ConnManager {
         })));
     }
     
-    public void putIfAbsent(String key, Session session) {
-        connMapping.putIfAbsent(key, session);
-    }
     public void put(String key, Session session) {
         connMapping.put(key, session);
     }
