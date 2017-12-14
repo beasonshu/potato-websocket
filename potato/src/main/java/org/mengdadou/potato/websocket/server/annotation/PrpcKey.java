@@ -13,4 +13,5 @@ import java.lang.annotation.Target;
 public @interface PrpcKey {
     String subtype() default "";
     
+    String desc() default "";
 }
