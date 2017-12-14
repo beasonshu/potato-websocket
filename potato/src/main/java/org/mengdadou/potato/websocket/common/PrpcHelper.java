@@ -25,7 +25,7 @@ import java.util.concurrent.TimeoutException;
 public class PrpcHelper {
     private static ConnManager connManager = ConnManager.getInstance();
     
-    private static final ClientManager clientManager = ClientManager.createClient(ContainerProvider.getWebSocketContainer());
+    private static final ClientManager clientManager = ClientManager.createClient();
     
     
     static {
