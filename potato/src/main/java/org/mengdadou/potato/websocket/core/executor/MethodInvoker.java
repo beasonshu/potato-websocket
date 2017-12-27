@@ -112,7 +112,7 @@ public class MethodInvoker {
     private Object[] getFinalArgsFromRequest(Session session, Request request) {
         int length = request.getArgs().length;
         Object[] finalArgs = new Object[length + 1];
-        finalArgs[0] = new PrpcCtxBean(session.getRequestURI().getHost(), WsURLResolveEnum.INST.getResolve().getTunnelKey(request.getURL()));
+        finalArgs[0] = new PrpcCtxBean(session.getRequestURI().getHost(), session);
         System.arraycopy(request.getArgs(), 0, finalArgs, 1, length);
         return finalArgs;
     }

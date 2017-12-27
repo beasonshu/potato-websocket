@@ -5,14 +5,13 @@ import org.mengdadou.potato.websocket.PrpcException;
 import org.mengdadou.potato.websocket.core.executor.MethodInvoker;
 import org.mengdadou.potato.websocket.core.scan.ScanPrpc;
 import org.mengdadou.potato.websocket.core.stat.PrpcStati;
-import org.mengdadou.potato.websocket.core.util.BrpcUtil;
+import org.mengdadou.potato.websocket.core.util.PrpcUtil;
 import org.mengdadou.potato.websocket.core.util.ResponseUtil;
 import org.mengdadou.potato.websocket.exchange.Request;
 import org.mengdadou.potato.websocket.exchange.Response;
 import org.mengdadou.potato.websocket.message.MessageFactory;
 import org.mengdadou.potato.websocket.message.MessageType;
 import org.mengdadou.potato.websocket.message.PrpcMessage;
-import org.mengdadou.potato.websocket.urlresolve.WsURLResolve;
 import org.mengdadou.potato.websocket.urlresolve.WsURLResolveEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +51,7 @@ public class PrpcDispatcher {
         
         Request request = (Request) o;
         PrpcStati.singelon().sealReqArrivedTime(request);
-        log.debug("request {} start from ip:{}, request URL : {}", request.getId(), BrpcUtil.getHost(sessionWrapper.origin()), request.getURL());
+        log.debug("request {} start from ip:{}, request URL : {}", request.getId(), PrpcUtil.getHost(sessionWrapper.origin()), request.getURL());
         
         MethodInvoker invoker = brpcMap.get(WsURLResolveEnum.INST.getResolve().getSubtype(request.getURL()));
         if (invoker == null) {

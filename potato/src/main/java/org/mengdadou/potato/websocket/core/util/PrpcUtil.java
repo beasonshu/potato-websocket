@@ -10,8 +10,8 @@ import javax.websocket.Session;
 /**
  * Created by mengdadou on 17-11-3.
  */
-public class BrpcUtil {
-    private static Logger log = LoggerFactory.getLogger(BrpcUtil.class);
+public class PrpcUtil {
+    private static Logger log = LoggerFactory.getLogger(PrpcUtil.class);
     
     public static String getTunnelKey(Session session) {
         Object object = session.getUserProperties().get(PrpcConfig.WS_URL_PROPERTY);
