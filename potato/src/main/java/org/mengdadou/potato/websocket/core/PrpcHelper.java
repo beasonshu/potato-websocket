@@ -11,7 +11,6 @@ import org.mengdadou.potato.websocket.exchange.assist.RequestType;
 import org.mengdadou.potato.websocket.future.FutureMapping;
 import org.mengdadou.potato.websocket.future.PrpcFuture;
 import org.mengdadou.potato.websocket.message.MessageFactory;
-import org.mengdadou.potato.websocket.urlresolve.WsURLResolve;
 import org.mengdadou.potato.websocket.urlresolve.WsURLResolveEnum;
 
 import javax.websocket.CloseReason;
@@ -39,7 +38,7 @@ public class PrpcHelper {
     private static Class endpoint = PrpcClientEndpoint.class;
     
     protected static void reset(String wsURL, String reason) throws IOException {
-        String tunnelKey = WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL);
+        String tunnelKey = WsURLResolveEnum.getResolve().getTunnelKey(wsURL);
         SessionWrapper sessionWrapper = connManager.remove(tunnelKey);
         if (sessionWrapper != null)
             sessionWrapper.close(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, reason));
@@ -78,32 +77,31 @@ public class PrpcHelper {
     }
     
     private static SessionWrapper connect(String wsURL) {
-        if (connManager.contains(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL)))
-            return connManager.get(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL));
+        if (connManager.contains(WsURLResolveEnum.getResolve().getTunnelKey(wsURL)))
+            return connManager.get(WsURLResolveEnum.getResolve().getTunnelKey(wsURL));
         return syncConnect(wsURL);
     }
     
     private synchronized static SessionWrapper syncConnect(String wsURL) {
-        if (connManager.contains(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL)))
-            return connManager.get(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL));
-        return connR(wsURL);
+        if (connManager.contains(WsURLResolveEnum.getResolve().getTunnelKey(wsURL)))
+            return connManager.get(WsURLResolveEnum.getResolve().getTunnelKey(wsURL));
+        connR(wsURL);
+        return connManager.get(WsURLResolveEnum.getResolve().getTunnelKey(wsURL));
     }
     
     // not thread safe
     // means that will create N conn to one remote
     // remote can be any content
     // but you should impl the URLHandler for get the host
-    private static SessionWrapper connR(String wsURL) {
+    private static void connR(String wsURL) {
+        Session session;
         try {
-            Session session = clientManager.connectToServer(endpoint, URI.create(wsURL));
-            SessionWrapper wrapper = SessionWrapper.of(session);
-            connManager.put(WsURLResolveEnum.INST.getResolve().getTunnelKey(wsURL), wrapper);
-            session.getUserProperties().put("wsURL", wsURL);
-            return wrapper;
+            session = clientManager.connectToServer(endpoint, URI.create(wsURL));
+            connManager.put(WsURLResolveEnum.getResolve().getTunnelKey(wsURL), SessionWrapper.of(session));
+            session.getUserProperties().put(PrpcConfig.WS_URL_PROPERTY, wsURL);
         } catch (DeploymentException | IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
     
     protected static void writeResp(Response response) {

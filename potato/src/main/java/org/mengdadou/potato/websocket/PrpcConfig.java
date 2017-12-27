@@ -30,7 +30,7 @@ public class PrpcConfig {
         } catch (IOException ignore) {
             // ignore
         }
-        String property = properties.getProperty("brpc.stati", "false");
+        String property = properties.getProperty("prpc.stati", "false");
         stati = Boolean.valueOf(property);
     }
     

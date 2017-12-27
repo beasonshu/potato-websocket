@@ -53,7 +53,7 @@ public class PrpcDispatcher {
         PrpcStati.singelon().sealReqArrivedTime(request);
         log.debug("request {} start from ip:{}, request URL : {}", request.getId(), PrpcUtil.getHost(sessionWrapper.origin()), request.getURL());
         
-        MethodInvoker invoker = brpcMap.get(WsURLResolveEnum.INST.getResolve().getSubtype(request.getURL()));
+        MethodInvoker invoker = brpcMap.get(WsURLResolveEnum.getResolve().getSubtype(request.getURL()));
         if (invoker == null) {
             try {
                 Response response = ResponseUtil.exception(request.getId(), "no service find for this path");

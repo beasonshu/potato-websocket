@@ -16,11 +16,11 @@ public class PrpcUtil {
     public static String getTunnelKey(Session session) {
         Object object = session.getUserProperties().get(PrpcConfig.WS_URL_PROPERTY);
         if (object != null) {
-            return WsURLResolveEnum.INST.getResolve().getTunnelKey((String) object);
+            return WsURLResolveEnum.getResolve().getTunnelKey((String) object);
         } else {
             //noinspection unchecked
             String addr = (String) session.getUserProperties().get(PrpcConfig.BRPC_CLIENT_IP);
-            String tunnelKey = WsURLResolveEnum.INST.getResolve().getTunnelKey("ws://" + addr + session.getRequestURI().toString());
+            String tunnelKey = WsURLResolveEnum.getResolve().getTunnelKey("ws://" + addr + session.getRequestURI().toString());
             log.debug("server tunnelKey {}", tunnelKey);
             return tunnelKey;
         }
