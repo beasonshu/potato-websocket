@@ -1,11 +1,11 @@
 package sample;
 
-import org.mengdadou.potato.websocket.common.PrpcConfig;
-import org.mengdadou.potato.websocket.common.codec.PrpcDecoder;
-import org.mengdadou.potato.websocket.common.message.PrpcMessage;
-import org.mengdadou.potato.websocket.common.codec.PrpcEncoder;
-import org.mengdadou.potato.websocket.server.PrpcServerConfigurator;
-import org.mengdadou.potato.websocket.server.PrpcWs;
+import org.mengdadou.potato.websocket.PrpcConfig;
+import org.mengdadou.potato.websocket.codec.PrpcDecoder;
+import org.mengdadou.potato.websocket.message.PrpcMessage;
+import org.mengdadou.potato.websocket.codec.PrpcEncoder;
+import org.mengdadou.potato.websocket.core.PrpcServerConfigurator;
+import org.mengdadou.potato.websocket.core.PrpcWs;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;

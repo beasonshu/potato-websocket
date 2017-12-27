@@ -1,4 +1,4 @@
-import org.mengdadou.potato.websocket.common.PrpcHelper;
+import org.mengdadou.potato.websocket.core.PrpcHelper;
 
 import java.rmi.RemoteException;
 import java.util.concurrent.ExecutionException;

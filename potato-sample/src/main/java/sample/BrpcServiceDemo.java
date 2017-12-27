@@ -1,9 +1,9 @@
 package sample;
 
-import org.mengdadou.potato.websocket.server.annotation.PrpcCtx;
-import org.mengdadou.potato.websocket.server.PrpcCtxBean;
-import org.mengdadou.potato.websocket.server.annotation.Prpc;
-import org.mengdadou.potato.websocket.server.annotation.PrpcKey;
+import org.mengdadou.potato.websocket.core.annotation.PrpcCtx;
+import org.mengdadou.potato.websocket.core.PrpcCtxBean;
+import org.mengdadou.potato.websocket.core.annotation.Prpc;
+import org.mengdadou.potato.websocket.core.annotation.PrpcKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
