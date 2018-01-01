@@ -16,25 +16,25 @@ import org.mengdadou.potato.websocket.urlresolve.WsURLResolveEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 /**
  * Created by mengdadou on 17-3-27.
  */
 public class PrpcDispatcher {
     private static Logger log = LoggerFactory.getLogger(PrpcDispatcher.class);
-    private ConcurrentHashMap<String, MethodInvoker> brpcMap;
+    private Map<String, MethodInvoker> brpcMap;
     private static PrpcDispatcher dispatcher = new PrpcDispatcher();
     
     private PrpcDispatcher() {
         this.brpcMap = new ScanPrpc().findAllPotatoRpc();
     }
     
-    public static PrpcDispatcher getInstance() {
+    static PrpcDispatcher getInstance() {
         return dispatcher;
     }
     
-    public void execute(SessionWrapper sessionWrapper, PrpcMessage message) {
+    void execute(SessionWrapper sessionWrapper, PrpcMessage message) {
         if (message.getHeader().getType() == MessageType.BEAT.getType()) {
             return;
         }
