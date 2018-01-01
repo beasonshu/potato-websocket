@@ -18,8 +18,8 @@ public class SessionWrapper {
         this.session = session;
         this.lastTime = System.currentTimeMillis();
     }
-    
-    public static SessionWrapper of(Session session) {
+
+    protected static SessionWrapper of(Session session) {
         return new SessionWrapper(session);
     }
     
@@ -34,12 +34,12 @@ public class SessionWrapper {
             lock.unlock();
         }
     }
-    
-    public void close(CloseReason reason) throws IOException {
+
+    protected void close(CloseReason reason) throws IOException {
         session.close(reason);
     }
-    
-    public long lastTime() {
+
+    protected long lastTime() {
         return lastTime;
     }
     
@@ -47,7 +47,7 @@ public class SessionWrapper {
         return session;
     }
     
-    public void updateLastTime() {
+    protected void updateLastTime() {
         lastTime = System.currentTimeMillis();
     }
 }

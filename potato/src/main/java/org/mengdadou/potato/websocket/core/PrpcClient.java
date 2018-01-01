@@ -4,7 +4,7 @@ import org.mengdadou.potato.websocket.future.PrpcFuture;
 
 import java.io.IOException;
 
-public class BrpcClient {
+public class PrpcClient {
     
     private static String template        = "ws://%s:%s/%s/%s/%s/%s";
     
