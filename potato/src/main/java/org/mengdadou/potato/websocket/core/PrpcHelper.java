@@ -44,32 +44,32 @@ public class PrpcHelper {
             sessionWrapper.close(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, reason));
     }
     
-    protected static Object sync(String wsURL, boolean overSSL, Object... data)
+    protected static Object sync(String wsURL, Object... data)
             throws PrpcException, InterruptedException, ExecutionException, TimeoutException {
-        return async(wsURL, overSSL, data).get(PrpcConfig.DEFAULT_READ_TIME_OUT, TimeUnit.MILLISECONDS);
+        return async(wsURL, data).get(PrpcConfig.DEFAULT_READ_TIME_OUT, TimeUnit.MILLISECONDS);
     }
     
-    protected static PrpcFuture async(String wsURL, boolean overSSL, Object... data)
+    protected static PrpcFuture async(String wsURL, Object... data)
             throws PrpcException {
         Request request = new Request(RequestType.SYNC.getType(), wsURL, data);
         PrpcFuture future = new PrpcFuture(request.getId());
         
         PrpcStati.singelon().sealReqTime(request);
         
-        sendObject(wsURL, MessageFactory.newMsg(request), overSSL);
+        sendObject(wsURL, MessageFactory.newMsg(request));
         return future;
     }
     
-    protected static void notify(String wsURL, boolean overSSL, Object... data)
+    protected static void notify(String wsURL, Object... data)
             throws PrpcException {
         Request request = new Request(RequestType.NOTIFY.getType(), wsURL, data);
         
         PrpcStati.singelon().sealReqTime(request);
         
-        sendObject(wsURL, MessageFactory.newMsg(request), overSSL);
+        sendObject(wsURL, MessageFactory.newMsg(request));
     }
     
-    private static void sendObject(String wsURL, Object object, boolean overSSL) throws PrpcException {
+    private static void sendObject(String wsURL, Object object) throws PrpcException {
         SessionWrapper sessionWrapper = connect(wsURL);
         if (sessionWrapper != null) {
             sessionWrapper.asyncSendObject(object);
