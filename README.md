@@ -2,7 +2,7 @@
 
 #### 注意
 1 通过SPI配置可以自定义实现MsgCodec实现   
-2 通过SPI配置可以自定义实现   
+2 通过SPI配置可以自定义实现IdGenerator实现
 3 通过SPI配置可以自定义解析WsURL,默认支持ws://%s:%s/%s/%s/%s/%s的URL规则,其中依次为ip,port,context,key1,uuid,subtype;其中uuid决定channel的唯一性，subtype决定服务的唯一性
 
 #### 使用示例
