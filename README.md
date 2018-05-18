@@ -1,14 +1,16 @@
 ### POTATAO-WEBSOCKET 基于websocket传输协议的点对点远程调用框架
 
-`PROTO-WEBSOCKET` 是基于websocket传输协议的点对点远程调用框架，设计上通过`@Brpc/@BrpcKey`来加载服务，使用`WS URL`的方式来调用服务。
-`PROTO-WEBSOCKET` 支持自定义：
+
+`PROTO-WEBSOCKET` 是基于websocket传输协议的点对点远程调用框架，框架通过`@Brpc/@BrpcKey`来加载服务，使用`WS URL`的方式来调用服务。   
+ 
+`PROTO-WEBSOCKET` 支持自定义:   
+
 * 可以自定义编码格式，默认使用的PROTOSTUFF   
 * 可以自定义ID格式，默认使用JAVA-AtomLong   
 * 可以自定义WsURL的解析方式，默认支持ws://%s:%s/%s/%s/%s/%s的URL规则，其中依次为ip,port,context,key1,uuid,subtype;其中uuid决定channel的唯一性，subtype决定服务的唯一性   
     > WsURL是PROTO-WEBSOCKET加载和匹配服务的关键，   
     > uuid可以使点对点之间建立多个连接通道通信，   
-    > stubtype决定远程调用的服务   
-
+    > stubtype决定远程调用的服务  
 
 #### 使用示例
 1 建立远程调用服务，如下：
