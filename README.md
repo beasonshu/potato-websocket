@@ -1,9 +1,4 @@
-### POTATAO-WEBSOCKET 基于websocket传输协议的点对点RPC框架
-
-#### 注意
-1 通过SPI配置可以自定义实现MsgCodec实现   
-2 通过SPI配置可以自定义实现IdGenerator实现
-3 通过SPI配置可以自定义解析WsURL,默认支持ws://%s:%s/%s/%s/%s/%s的URL规则,其中依次为ip,port,context,key1,uuid,subtype;其中uuid决定channel的唯一性，subtype决定服务的唯一性
+### POTATAO-WEBSOCKET 基于websocket传输协议的点对点远程调用框架
 
 #### 使用示例
 1 建立远程调用服务，如下：
@@ -12,11 +7,13 @@
  * Created by mengdadou on 17-9-25.
  */
 @Prpc(pool = 10, desc = "service test for brpc")
+// rpc服务描述和处理池
 public class BrpcServiceDemo {
     private static Logger log = LoggerFactory.getLogger(BrpcServiceDemo.class);
     
     @PrpcKey(subtype = "201")
-    public String getName(long id) {
+    // 业务key，全局唯一
+    public String getName(long id) {
         log.debug("accept param id is {}", id);
         return "this is liming ~~" + id;
     }
@@ -34,6 +31,7 @@ public class BrpcServiceDemo {
  * Created by mengdadou on 17-9-25.
  */
 @ServerEndpoint(value = "/sample1/{uuid}/{subtype}", configurator = PrpcServerConfigurator.class, encoders = PrpcEncoder.class, decoders = PrpcDecoder.class)
+// 必须指定configurator/encoders/decoders
 public class BrpcServerDemo {
     private static PrpcWs prpcWs = new PrpcWs().setExecTimeout(30, TimeUnit.SECONDS);
     
@@ -87,3 +85,9 @@ this is liming ~~7
 this is liming ~~8
 this is liming ~~9
 ```
+
+
+#### 注意
+1 通过SPI配置可以自定义实现MsgCodec实现   
+2 通过SPI配置可以自定义实现IdGenerator实现
+3 通过SPI配置可以自定义解析WsURL,默认支持ws://%s:%s/%s/%s/%s/%s的URL规则,其中依次为ip,port,context,key1,uuid,subtype;其中uuid决定channel的唯一性，subtype决定服务的唯一性
