@@ -1,7 +1,7 @@
 ### POTATAO-WEBSOCKET 基于websocket传输协议的点对点远程调用框架
 
 
-PROTO-WEBSOCKET 是基于websocket传输协议的点对点远程调用框架，框架通过`@Brpc/@BrpcKey`来加载服务，使用`WS URL`的方式来调用服务。   
+POTATAO-WEBSOCKET 是基于websocket传输协议的点对点远程调用框架，框架通过`@Brpc/@BrpcKey`来加载服务，使用`WS URL`的方式来调用服务。  
 
 #### 使用示例
 1 建立远程调用服务，如下：
