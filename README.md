@@ -22,6 +22,7 @@ public class BrpcServiceDemo {
     }
     
     @PrpcKey(subtype = "202")
+    // 可以使用@BrpcCtx获取上下文，获取请求的其他属性，目前只包含session/remote
     public String getName(@PrpcCtx PrpcCtxBean bean, long id) {
         return "this is liming ~~" + id;
     }
