@@ -88,7 +88,7 @@ this is liming ~~9
 
 
 #### 注意
-PROTO-WEBSOCKET
+PROTO-WEBSOCKET   
 1 可以自定义编码格式，默认使用的PROTOSTUFF   
 2 可以自定义ID格式，默认使用JAVA-AtomLong   
 3 可以自定义WsURL的解析方式，默认支持ws://%s:%s/%s/%s/%s/%s的URL规则，其中依次为ip,port,context,key1,uuid,subtype;其中uuid决定channel的唯一性，subtype决定服务的唯一性   
